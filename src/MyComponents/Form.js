@@ -1,54 +1,62 @@
-import { Box, TextField ,Button, makeStyles} from '@material-ui/core'
+import {
+    Box,
+    TextField,
+    Button,
+    makeStyles
+} from '@material-ui/core'
 import React from 'react'
-import { useEffect, useState } from 'react'
+import {
+    useEffect,
+    useState
+} from 'react'
 import { getData } from './Api'
 import { Information } from './Information'
 const useStyles = makeStyles({
 
-    component:{
-        borderRadius:"0px 20px 0px 0px",
+    component: {
+        borderRadius: "0px 20px 0px 0px",
         background: "#505488",
         padding: "16px"
-    
+
     },
-    input:{
-        color:"#fff",
+    input: {
+        color: "#fff",
     },
-    TextField:{
-        marginRight:"50px"
+    TextField: {
+        marginRight: "50px"
     },
-   
-    Button:{
-        background:"orange",
-        marginLeft:"90px",
-        borderRadius:"20px"
+
+    Button: {
+        background: "orange",
+        marginLeft: "90px",
+        borderRadius: "20px"
     }
- })
+})
 
- const Form = () => {
+const Form = () => {
 
-    const classes=useStyles();
-    
-    const [data, getWeatherData] = useState()
-    const[city, setCity]=useState("");
-    const[country, setCountry]=useState("");
-    const[click,handleClick]=useState("false")
+    const classes = useStyles();
 
+    const [content, setcontent] = useState()
+    const [city, setCity] = useState("");
+    const [country, setCountry] = useState("");
+    const [click, handleClick] = useState("false")
+
+    const Getweather = async () => {
+       const {data} =  city && await getData(city, country);
+       setcontent(data);
+    }
     useEffect(() => {
-       const Getweather= async()=>{
-      city && await getData(city,country).then(response=>{
-            getWeatherData(response.data)
-            
-        })}
         Getweather();
         handleClick("false")
+        // eslint-disable-next-line
     }, [click])
-const handleCityChange=(value)=>{
-    setCity(value);
-}
-const handleCountryChange=(value)=>{
-    setCountry(value);
-}
+    const handleCityChange = (value) => {
+        setCity(value);
+    }
+    const handleCountryChange = (value) => {
+        setCountry(value);
+    }
     return (
         <>
         
@@ -70,7 +78,7 @@ const handleCountryChange=(value)=>{
             <Button className={classes.Button}
             variant="contained" onClick={()=>handleClick(true)} >Get Weather</Button>
         </Box>
-        <Information data={data}/>
+        <Information data={content}/>
         </>
     )
 }
